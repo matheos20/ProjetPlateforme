@@ -41,73 +41,136 @@
 </section>
 <section class="main-content">
     <div class="row">
+        <!-- LOGIN -->
         <div class="span5">
             <h4 class="title"><span class="text"><strong>Login</strong> Form</span></h4>
-            <form action="#" method="post">
-                <input type="hidden" name="next" value="/">
+
+            {{-- Affichage des messages --}}
+            @if(session('message'))
+                <div class="alert alert-info">{{ session('message') }}</div>
+            @endif
+
+            @if(session('success_confirm'))
+                <div class="alert alert-success">{{ session('success_confirm') }}</div>
+            @endif
+
+            @if(session('error_confirm'))
+                <div class="alert alert-danger">{{ session('error_confirm') }}</div>
+            @endif
+
+            @if(session('error_login'))
+                <div class="alert alert-danger">{{ session('error_login') }}</div>
+            @endif
+            <form action="{{ route('auth.login') }}" method="POST">
+                @csrf
                 <fieldset>
                     <div class="control-group">
-                        <label class="control-label">Nom</label>
+                        <label class="control-label">Email</label>
                         <div class="controls">
-                            <input type="text" placeholder="Enter votre nom" id="username" class="input-xlarge">
+                            <input type="email" name="email" placeholder="Entrer votre email" class="input-xlarge" required>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">Prenom</label>
+                        <label class="control-label">Password</label>
                         <div class="controls">
-                            <input type="password" placeholder="Enter your password" id="password" class="input-xlarge">
+                            <input type="password" name="password" placeholder="Votre mot de passe" class="input-xlarge" required>
                         </div>
                     </div>
                     <div class="control-group">
-                        <input tabindex="3" class="btn btn-inverse large" type="submit" value="Connectez">
+                        <input class="btn btn-inverse large" type="submit" value="Connectez">
                         <hr>
-                        <p class="reset">Oublier <a tabindex="4" href="#" title="Recover your username or password">Nom ou password</a></p>
+                        <p class="reset">Oublié ? <a href="#">Nom ou mot de passe</a></p>
                     </div>
                 </fieldset>
             </form>
         </div>
+
+        <!-- REGISTER -->
         <div class="span7">
             <h4 class="title"><span class="text"><strong>Register</strong> Form</span></h4>
-            <form action="#" method="post" class="form-stacked">
+
+            @if ($errors->any())
+                <div>
+                    @foreach ($errors->all() as $error)
+                        <p style="color: red">{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
+            <form action="{{ route('auth.register') }}" method="POST" class="form-stacked">
+                @csrf
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label">Nom</label>
                         <div class="controls">
-                            <input type="text" placeholder="Entre votre Nom" class="input-xlarge">
+                            <input type="text" name="name" placeholder="Entrer votre Nom" class="input-xlarge" required>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label">Email :</label>
                         <div class="controls">
-                            <input type="password" placeholder="Votre mail email" class="input-xlarge">
+                            <input type="email" name="email" placeholder="Votre adresse email" class="input-xlarge" required>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">Password:</label>
+                        <label class="control-label">Mot de passe:</label>
                         <div class="controls">
-                            <input type="password" placeholder="Votre password" class="input-xlarge">
+                            <input type="password" name="password" placeholder="Votre mot de passe" class="input-xlarge" required>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">personage</label>
+                        <label class="control-label">Rôle</label>
                         <div class="controls">
-                            <select name="cars" id="cars">
-                                <option value="volvo">client</option>
-                                <option value="saab">jeux</option>
-                                <option value="opel">cooperative</option>
-                                <option value="audi">comerciale</option>
-                                <option value="audi">docteur</option>
+                            <select name="role" class="input-xlarge" required>
+                                <option value="client">client</option>
+                                <option value="jeux">jeux</option>
+                                <option value="cooperative">cooperative</option>
+                                <option value="comerciale">comerciale</option>
+                                <option value="docteur">docteur</option>
                             </select>
                         </div>
                     </div>
                     <div class="control-group">
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum?</p>
+                        <p>En vous inscrivant, vous acceptez nos conditions d'utilisation.</p>
                     </div>
                     <hr>
-                    <div class="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="Créer votre compte"></div>
+                    <div class="actions">
+                        <input class="btn btn-inverse large" type="submit" value="Créer votre compte">
+                    </div>
                 </fieldset>
             </form>
         </div>
+
+        <div class="span6 col-md-4">
+            <h4 class="title"><span class="text"><strong>Code</strong> de confirmation</span></h4>
+            <form action="{{ route('confirm.code') }}" method="POST">
+                @csrf
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label">Email</label>
+                        <div class="controls">
+                            <input type="email" name="email" placeholder="Votre email" class="input-xlarge form-control" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Code reçu</label>
+                        <div class="controls">
+                            <input type="text" name="code" placeholder="Entrez le code" class="input-xlarge form-control" required>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="actions">
+                        <input class="btn btn-dark btn-block" type="submit" value="Confirmer le code">
+                    </div>
+                </fieldset>
+            </form>
+            <form method="POST" action="{{ route('resend.code') }}">
+                @csrf
+                <input type="hidden" name="email" value="{{ old('email') }}">
+                <button type="submit" class="btn btn-warning">Renvoyer le code</button>
+            </form>
+        </div>
+
     </div>
 </section>
 
