@@ -30,6 +30,12 @@
   <script src="{{ asset('js/bootstrap.bundle.min.jsrespond.min.js') }}"></script>
     <![endif]-->
 </head>
+<style>
+    #validation {
+        display: none;
+    }
+</style>
+
 <body>
 
 @include('partials.header')
@@ -143,7 +149,7 @@
 
         <div class="span6 col-md-4">
             <h4 class="title"><span class="text"><strong>Code</strong> de confirmation</span></h4>
-            <form action="{{ route('confirm.code') }}" method="POST">
+            <form action="{{ route('confirm.code') }}" method="POST" class="validation" id="validation">
                 @csrf
                 <fieldset>
                     <div class="control-group">
@@ -175,6 +181,26 @@
 </section>
 
 @include('partials.footer')
+
+@if(session('need_confirmation'))
+    <script>
+        $(document).ready(function () {
+            // Affiche le formulaire de confirmation
+            $('#validation').fadeIn();
+
+            // Préremplit l'email si transmis depuis la session
+            @if(session('email'))
+            $('input[name="email"]').val('{{ session('email') }}');
+            @endif
+
+            // Scroller vers le formulaire
+            $('html, body').animate({
+                scrollTop: $('#validation').offset().top
+            }, 600);
+        });
+    </script>
+@endif
+
 <script src="{{ asset('js/script.js') }}"></script>
 <script src="{{ asset('js/common.js') }}"></script>
 <script src="{{ asset('js/jquery.flexslider-min.js') }}"></script>

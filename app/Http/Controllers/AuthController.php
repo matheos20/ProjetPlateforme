@@ -69,7 +69,13 @@ class AuthController extends Controller
         //Auth::login($user);
         //return redirect('/dashboard');
 
-        return redirect()->back()->with('message', 'Inscription réussie ! Vérifiez votre e-mail pour confirmer votre compte.');
+      //  return redirect()->back()->with('message', 'Inscription réussie ! Vérifiez votre e-mail pour confirmer votre compte.');
+        return redirect()->route('auth.page')->with([
+            'message' => 'Inscription réussie ! Vérifiez votre e-mail pour confirmer votre compte.',
+            'need_confirmation' => true,
+            'email' => $request->email
+        ]);
+
 
     }
 
