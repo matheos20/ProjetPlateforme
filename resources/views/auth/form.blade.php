@@ -31,7 +31,7 @@
     <![endif]-->
 </head>
 <style>
-    #validation {
+    #validation, #resend-btn {
         display: none;
     }
 </style>
@@ -42,7 +42,7 @@
 
 
 <section class="header_text sub">
-    <img class="pageBanner" src="themes/images/pageBanner.png" alt="New products" >
+    <img class="pageBanner" src="{{ asset('images/pageBanner.png') }}" alt="New products" >
     <h4><span>Login et Inscription</span></h4>
 </section>
 <section class="main-content">
@@ -145,9 +145,6 @@
                     </div>
                 </fieldset>
             </form>
-        </div>
-
-        <div class="span6 col-md-4">
             <h4 class="title"><span class="text"><strong>Code</strong> de confirmation</span></h4>
             <form action="{{ route('confirm.code') }}" method="POST" class="validation" id="validation">
                 @csrf
@@ -166,16 +163,21 @@
                     </div>
                     <hr>
                     <div class="actions">
-                        <input class="btn btn-dark btn-block" type="submit" value="Confirmer le code">
+                        {{--                        <input class="btn btn-dark btn-block" type="submit" value="Confirmer le code">--}}
+                        <input class="btn btn-inverse large" type="submit" value="Confirmer le code">
                     </div>
                 </fieldset>
             </form>
-            <form method="POST" action="{{ route('resend.code') }}">
-                @csrf
-                <input type="hidden" name="email" value="{{ old('email') }}">
-                <button type="submit" class="btn btn-warning">Renvoyer le code</button>
-            </form>
+            <div class="span6 col-md-4" id="resend-btn">
+                <form method="POST" action="{{ route('resend.code') }}">
+                    @csrf
+                    <input type="hidden" name="email" value="{{ old('email') }}">
+                    <button type="submit" class="btn btn-warning">Renvoyer le code</button>
+                </form>
+            </div>
         </div>
+
+
 
     </div>
 </section>
@@ -186,7 +188,7 @@
     <script>
         $(document).ready(function () {
             // Affiche le formulaire de confirmation
-            $('#validation').fadeIn();
+            $('#validation,#resend-btn').fadeIn();
 
             // Préremplit l'email si transmis depuis la session
             @if(session('email'))

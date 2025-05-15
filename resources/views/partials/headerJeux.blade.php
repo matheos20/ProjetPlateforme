@@ -9,8 +9,7 @@
         <div class="span8">
             <nav class="account pull-right" id="menu">
                 <ul class="user-menu">
-                    <li><a href="{{ route('auth.page') }}">Inscription</a></li>
-                    <li><a href="{{ route('auth.page') }}">Login</a>
+                    <li><a href="#">name user</a></li>
                     </li>
                     <li><a href="{{ route('auth.logout') }}">Déconnecter</a></li>
 
@@ -31,15 +30,8 @@
             <nav id="menu" class="pull-right">
                 <ul>
                     <li><a href="{{ route('home.page') }}">Home</a></li>
-                    <li><a href="#">Services</a>
-                        <ul>
-                            <li><a href="#">Game</a></li>
-                            <li><a href="./products.html">Shop</a></li>
-                            <li><a href="./reservation.html">Reservation</a></li>
-                            <li><a href="./docteur.html">Docteur</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#">Nouveau jeux</a></li>
+                    <li><a href="contact.html">Resultat</a></li>
                 </ul>
             </nav>
         </div>
